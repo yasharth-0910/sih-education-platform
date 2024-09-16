@@ -144,7 +144,7 @@ export default function Dashboard() {
           />
           <div>
             <h1 className="text-3xl font-bold text-[#1c1d1f]">Shiksha Setu Dashboard</h1>
-            <p className="text-sm text-[#6a6f73]">विद्या तत्त्व ज्योतिस्मः - Knowledge is the essence of light</p>
+            <p className="text-sm text-[#6a6f73]"></p>
           </div>
         </div>
         <Badge variant="outline" className="text-[#a435f0] border-[#a435f0]">

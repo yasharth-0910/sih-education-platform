@@ -56,9 +56,6 @@ export default function EnhancedTeacherDashboard() {
     { month: 'Apr', enrollments: 180 },
     { month: 'May', enrollments: 200 },
     { month: 'Jun', enrollments: 230 },
-    { month: 'Jul', enrollments: 180 },
-    { month: 'Aug', enrollments: 210 }
-
   ]
   const revenueBreakdown = [
     { course: 'Web Development', revenue: 30000 },
@@ -106,104 +103,63 @@ export default function EnhancedTeacherDashboard() {
 
   const [selectedTimeRange, setSelectedTimeRange] = useState('This Month')
 
-//   const dashboardRef = useRef(null)
+  const dashboardRef = useRef(null)
 
-//   const handleExportData = async () => {
-//     if (!dashboardRef.current) return
+  const handleExportData = async () => {
+    if (!dashboardRef.current) return
 
-//     const pdf = new jsPDF('p', 'mm', 'a4')
-//     const pdfWidth = pdf.internal.pageSize.getWidth()
-//     const pdfHeight = pdf.internal.pageSize.getHeight()
+    const pdf = new jsPDF('p', 'mm', 'a4')
+    const pdfWidth = pdf.internal.pageSize.getWidth()
+    const pdfHeight = pdf.internal.pageSize.getHeight()
 
-//     // Add title
-//     pdf.setFontSize(20)
-//     pdf.text('Teacher Analytics Report', pdfWidth / 2, 15, { align: 'center' })
+    // Add title
+    pdf.setFontSize(20)
+    pdf.text('Teacher Analytics Report', pdfWidth / 2, 15, { align: 'center' })
 
-//     // Add summary data
-//     pdf.setFontSize(12)
-//     pdf.text(`Total Students: ${totalStudents}`, 20, 30)
-//     pdf.text(`Total Courses: ${totalCourses}`, 20, 40)
-//     pdf.text(`Total Revenue: ₹${totalRevenue.toLocaleString()}`, 20, 50)
-//     pdf.text(`Course Completion Rate: ${courseCompletionRate}%`, 20, 60)
+    // Add summary data
+    pdf.setFontSize(12)
+    pdf.text(`Total Students: ${totalStudents}`, 20, 30)
+    pdf.text(`Total Courses: ${totalCourses}`, 20, 40)
+    pdf.text(`Total Revenue: ₹${totalRevenue.toLocaleString()}`, 20, 50)
+    pdf.text(`Course Completion Rate: ${courseCompletionRate}%`, 20, 60)
 
-//     // Capture and add charts
-//     const chartElements = dashboardRef.current.querySelectorAll('.recharts-wrapper')
-//     let yOffset = 70
+    // Capture and add charts
+    const chartElements = dashboardRef.current.querySelectorAll('.recharts-wrapper')
+    let yOffset = 70
 
-//     for (let i = 0; i < chartElements.length; i++) {
-//       const chart = chartElements[i]
-//       const canvas = await html2canvas(chart)
-//       const imgData = canvas.toDataURL('image/png')
+    for (let i = 0; i < chartElements.length; i++) {
+      const chart = chartElements[i]
+      const canvas = await html2canvas(chart)
+      const imgData = canvas.toDataURL('image/png')
       
-//       if (yOffset + 60 > pdfHeight) {
-//         pdf.addPage()
-//         yOffset = 20
-//       }
+      if (yOffset + 60 > pdfHeight) {
+        pdf.addPage()
+        yOffset = 20
+      }
 
-//       pdf.addImage(imgData, 'PNG', 20, yOffset, 170, 60)
-//       yOffset += 70
-//     }
-
-//     // Add tables
-//     pdf.addPage()
-//     pdf.autoTable({
-//       head: [['Course', 'Completion Rate', 'Engagement']],
-//       body: courseAnalysis.map(course => [course.name, `${course.completionRate}%`, `${course.engagement}%`]),
-//       startY: 20,
-//     })
-
-//     pdf.addPage()
-//     pdf.autoTable({
-//       head: [['Feedback', 'Count']],
-//       body: commonFeedback.map(feedback => [feedback.comment, feedback.count]),
-//       startY: 20,
-//     })
-
-//     // Save the PDF
-//     pdf.save('teacher_analytics.pdf')
-//   }
-
-const handleExportData = () => {
-    // Combine all the data into a single object
-    const exportData = {
-      totalStudents,
-      totalCourses,
-      totalRevenue,
-      studentPurchases,
-      feedbackDistribution,
-      courseAnalysis,
-      studentEngagement,
-      teacherRanking,
-      teacherRating,
-      studentEnrollmentTrends,
-      revenueBreakdown,
-      commonFeedback,
-      teacherSkills,
-      upcomingDeadlines,
-      studentPerformance,
-      courseCompletionRate,
+      pdf.addImage(imgData, 'PNG', 20, yOffset, 170, 60)
+      yOffset += 70
     }
 
-    // Convert the data to a JSON string
-    const jsonString = JSON.stringify(exportData, null, 2)
+    // Add tables
+    pdf.addPage()
+    pdf.autoTable({
+      head: [['Course', 'Completion Rate', 'Engagement']],
+      body: courseAnalysis.map(course => [course.name, `${course.completionRate}%`, `${course.engagement}%`]),
+      startY: 20,
+    })
 
-    // Create a Blob with the JSON data
-    const blob = new Blob([jsonString], { type: 'application/json' })
+    pdf.addPage()
+    pdf.autoTable({
+      head: [['Feedback', 'Count']],
+      body: commonFeedback.map(feedback => [feedback.comment, feedback.count]),
+      startY: 20,
+    })
 
-    // Create a temporary URL for the Blob
-    const url = URL.createObjectURL(blob)
-
-    // Create a temporary anchor element and trigger the download
-    const a = document.createElement('a')
-    a.href = url
-    a.download = 'teacher_analytics.json'
-    document.body.appendChild(a)
-    a.click()
-
-    // Clean up
-    document.body.removeChild(a)
-    URL.revokeObjectURL(url)
+    // Save the PDF
+    pdf.save('teacher_analytics.pdf')
   }
+
    
 
   
@@ -244,7 +200,7 @@ const handleExportData = () => {
       <Alert className="mb-6 bg-[#a435f0] text-white">
         <Gift className="h-4 w-4" />
         <AlertTitle>Teacher Spotlight</AlertTitle>
-        <AlertDescription>Congratulations! You're in the top 5% of teachers this month. Keep up the excellent work!</AlertDescription>
+        <AlertDescription>Congratulations! You&apos;re in the top 5% of teachers this month. Keep up the excellent work!</AlertDescription>
       </Alert>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -599,19 +555,19 @@ const handleExportData = () => {
             <ul className="space-y-2">
               <li className="flex items-center text-sm">
                 <Bell className="h-4 w-4 mr-2 text-[#a435f0]" />
-                <span>New student feedback received for "Data Science" course</span>
+                <span>New student feedback received for &apos;Data Science&apos; course</span>
               </li>
               <li className="flex items-center text-sm">
                 <Clock className="h-4 w-4 mr-2 text-[#a435f0]" />
-                <span>Course review for "Web Development" due in 2 days</span>
+                <span>Course review for &apos;Web Development&apos; due in 2 days</span>
               </li>
               <li className="flex items-center text-sm">
                 <Target className="h-4 w-4 mr-2 text-[#a435f0]" />
-                <span>You're close to reaching 1500 total students!</span>
+                <span>You&apos;re close to reaching 1500 total students!</span>
               </li>
               <li className="flex items-center text-sm">
                 <Award className="h-4 w-4 mr-2 text-[#a435f0]" />
-                <span>Congratulations! Your "Machine Learning" course has been featured on the homepage.</span>
+                <span>Congratulations! Your &apos;Machine Learning&apos; course has been featured on the homepage.</span>
               </li>
             </ul>
           </CardContent>
@@ -625,7 +581,7 @@ const handleExportData = () => {
         </div>
         <div className="flex space-x-2">
           <Button variant="outline" onClick={handleExportData}>
-            <Download className="mr-2 h-4 w-4" /> Export Data
+            <Download className="mr-2 h-4 w-4" /> Export PDF
           </Button>
           <Button>
             <PieChartIcon className="mr-2 h-4 w-4" /> Customize Widgets
